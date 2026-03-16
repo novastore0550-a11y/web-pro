@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - الإشعارات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body class="dark-theme">
+
+    <!-- Login Screen -->
+    <div id="adminLoginScreen" class="screen active">
+        <div class="login-box">
+            <h2>تسجيل الدخول للإدارة</h2>
+            <form id="adminLoginForm">
+                <input type="text" id="username" placeholder="اسم المستخدم" required>
+                <input type="password" id="password" placeholder="كلمة المرور" required>
+                <button type="submit" class="btn">دخول</button>
+                <p id="loginError" class="error"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard Screen -->
+    <div id="adminDashboardScreen" class="screen">
+        <header class="admin-header">
+            <h2>لوحة التحكم 🚀</h2>
+            <div>
+                <span id="adminName"></span>
+                <button id="logoutBtn" class="btn btn-sm btn-outline">تسجيل الخروج</button>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            <!-- Sidebar / Stats -->
+            <aside class="sidebar">
+                <div class="stat-card">
+                    <h3>المشتركين</h3>
+                    <p id="subCount" class="stat-num">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>إجمالي الإشعارات</h3>
+                    <p id="notifCount" class="stat-num">0</p>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="main-panel">
+                
+                <!-- Create Notification Section -->
+                <section class="panel-section">
+                    <div class="section-head">
+                        <h3>إضافة إشعار جديد</h3>
+                    </div>
+                    <form id="createNotifForm" class="notif-form">
+                        <div class="form-group">
+                            <label>العنوان</label>
+                            <input type="text" id="notifTitle" required placeholder="عنوان الإشعار...">
+                        </div>
+                        <div class="form-group">
+                            <label>الرسالة</label>
+                            <textarea id="notifMsg" required placeholder="محتوى الإشعار..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>رابط التوجيه (Url)</label>
+                                <input type="url" id="notifUrl" placeholder="https://example.com" value="https://example.com">
+                            </div>
+                            <div class="form-group">
+                                <label>أيقونة (اختياري)</label>
+                                <input type="text" id="notifIcon" placeholder="/images/icon-192.png" value="/images/icon-192.png">
+                            </div>
+                        </div>
+
+                        <div class="scheduling-options">
+                            <h4>خيارات الجدولة</h4>
+                            <label><input type="radio" name="scheduleType" value="now" checked> أرسل فوراً</label>
+                            <label><input type="radio" name="scheduleType" value="date"> في تاريخ ووقت محدد</label>
+                            <label><input type="radio" name="scheduleType" value="cron"> متكرر (Cron)</label>
+                        </div>
+
+                        <div id="scheduleInputs" class="schedule-inputs" style="display: none;">
+                            <div class="form-group" id="dateInputGroup">
+                                <label>وقت وتاريخ الإرسال</label>
+                                <input type="datetime-local" id="notifDate">
+                            </div>
+                            <div class="form-group" id="cronInputGroup" style="display: none;">
+                                <label>تعبير Cron Job <small>(مثال: 11 11 * * * كل يوم 11:11)</small></label>
+                                <input type="text" id="notifCron" placeholder="* * * * *">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" id="saveNotifBtn">إضافة الإشعار</button>
+                    </form>
+                </section>
+
+                <!-- Scheduled Notifications Table -->
+                <section class="panel-section">
+                    <div class="section-head">
+                        <h3>إدارة الإشعارات</h3>
+                        <button class="btn btn-sm" onclick="fetchNotifications()">تحديث 🔄</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>العنوان</th>
+                                    <th>الجدولة</th>
+                                    <th>الحالة</th>
+                                    <th>إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="notifTableBody">
+                                <!-- Trs populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Logs Table -->
+                <section class="panel-section">
+                    <div class="section-head">
+                        <h3>سجل الإرسال</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>رقم الإشعار</th>
+                                    <th>الحالة</th>
+                                    <th>وقت الإرسال</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsTableBody">
+                                <!-- Logs populated via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Countdown 💗</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css" />
+
+    <!-- Session Protection Script -->
+    <script>
+        // If not logged in, redirect to login page immediately before rendering
+        if (sessionStorage.getItem("forNada_unlocked") !== "true") {
+            window.location.replace("index.html");
+        }
+    </script>
+</head>
+
+<body class="countdown-page">
+
+    <!-- Floating hearts layer -->
+    <div id="heartsLayer" aria-hidden="true"></div>
+
+    <main class="countdown-wrap reveal in">
+
+        <!-- ===== العداد التنازلي ===== -->
+        <section class="countdown-card glass counter-block relative">
+            <h1 class="countdown-title glow">
+                ✨ يومنا يا نور عيني
+            </h1>
+            <p class="countdown-subtitle">
+                ذكرى حبنا 💗 27 أغسطس
+            </p>
+
+            <div class="time-grid">
+                <div class="time-box glass">
+                    <div class="time-num" id="cdSeconds">00</div>
+                    <div class="time-label">ثانية</div>
+                </div>
+                <div class="time-box glass">
+                    <div class="time-num" id="cdMinutes">00</div>
+                    <div class="time-label">دقيقة</div>
+                </div>
+                <div class="time-box glass">
+                    <div class="time-num" id="cdHours">00</div>
+                    <div class="time-label">ساعة</div>
+                </div>
+                <div class="time-box glass">
+                    <div class="time-num" id="cdDays">00</div>
+                    <div class="time-label">يوم</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== مسافة واضحة ===== -->
+        <div class="counter-separator"></div>
+
+        <!-- ===== عداد حبنا (من 27/8/2025) ===== -->
+        <section class="countdown-card glass counter-block relative" style="border-color: rgba(255, 122, 182, 0.2);">
+            <p class="countup-title romantic glow-pink">
+                💞 عداد حبنا من 27/8/2025
+            </p>
+
+            <div class="time-grid small">
+                <div class="time-box glass">
+                    <div class="time-num" id="upSeconds">00</div>
+                    <div class="time-label">ثانية</div>
+                </div>
+                <div class="time-box glass">
+                    <div class="time-num" id="upMinutes">00</div>
+                    <div class="time-label">دقيقة</div>
+                </div>
+                <div class="time-box glass">
+                    <div class="time-num" id="upHours">00</div>
+                    <div class="time-label">ساعة</div>
+                </div>
+                <div class="time-box glass">
+                    <div class="time-num" id="upDays">00</div>
+                    <div class="time-label">يوم</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== زر الرجوع ===== -->
+        <div class="countdown-actions">
+            <a href="index.html#welcome" class="btn btn-glow" id="backBtn">
+                الرجوع للذكريات 💗
+            </a>
+        </div>
+
+        <!-- ===== التوقيع ===== -->
+        <p class="made-with">
+            made with Qasam © <span id="year">2026</span>
+        </p>
+
+    </main>
+
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        const cdElements = {
+            days: document.getElementById("cdDays"),
+            hours: document.getElementById("cdHours"),
+            minutes: document.getElementById("cdMinutes"),
+            seconds: document.getElementById("cdSeconds"),
+        };
+
+        const upElements = {
+            days: document.getElementById("upDays"),
+            hours: document.getElementById("upHours"),
+            minutes: document.getElementById("upMinutes"),
+            seconds: document.getElementById("upSeconds"),
+        };
+
+        const countdownDate = new Date(2026, 7, 27); // 27 Aug 2026
+        const loveStart = new Date(2025, 7, 27);     // 27 Aug 2025
+
+        function padZero(num) {
+            return num < 10 ? "0" + num : num;
+        }
+
+        // Animate flip effect simply by toggling a class
+        function updateTimeBox(el, val) {
+            const strVal = padZero(val);
+            if (el && el.textContent !== strVal) {
+                el.textContent = strVal;
+                // Add a tiny bump animation
+                el.parentElement.style.transform = "scale(1.03)";
+                setTimeout(() => el.parentElement.style.transform = "scale(1)", 150);
+            }
+        }
+
+        function tickCountdown() {
+            const now = new Date();
+            let diff = countdownDate.getTime() - now.getTime();
+            if (diff < 0) diff = 0;
+
+            updateTimeBox(cdElements.days, Math.floor(diff / (1000 * 60 * 60 * 24)));
+            updateTimeBox(cdElements.hours, Math.floor((diff / (1000 * 60 * 60)) % 24));
+            updateTimeBox(cdElements.minutes, Math.floor((diff / (1000 * 60)) % 60));
+            updateTimeBox(cdElements.seconds, Math.floor((diff / 1000) % 60));
+        }
+
+        function tickCountup() {
+            const now = new Date();
+            let diff = now.getTime() - loveStart.getTime();
+            if (diff < 0) diff = 0;
+
+            updateTimeBox(upElements.days, Math.floor(diff / (1000 * 60 * 60 * 24)));
+            updateTimeBox(upElements.hours, Math.floor((diff / (1000 * 60 * 60)) % 24));
+            updateTimeBox(upElements.minutes, Math.floor((diff / (1000 * 60)) % 60));
+            updateTimeBox(upElements.seconds, Math.floor((diff / 1000) % 60));
+        }
+
+        tickCountdown();
+        tickCountup();
+        setInterval(() => {
+            tickCountdown();
+            tickCountup();
+        }, 1000);
+
+        /* Floating SVG hearts logic copied for standalone page */
+        const heartsLayer = document.getElementById("heartsLayer");
+        function createHeartSVG() {
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute("viewBox", "0 0 24 24");
+            svg.setAttribute("class", "heart-float");
+            const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            path.setAttribute("d", "M12 21s-7.2-4.6-9.5-8.4C.2 9.2 2 6 5.4 6c1.7 0 3.2.9 4.1 2.1C10.4 6.9 11.9 6 13.6 6 17 6 18.8 9.2 21.5 12.6 19.2 16.4 12 21 12 21z");
+            const fills = ["#ff7ab6", "#b89cff", "#ffd1e6", "#ffcf7a"];
+            path.setAttribute("fill", fills[Math.floor(Math.random() * fills.length)]);
+            svg.appendChild(path);
+            return svg;
+        }
+
+        function spawnHeart() {
+            if (!heartsLayer) return;
+            const heart = createHeartSVG();
+            const left = Math.random() * 100;
+            const drift = (Math.random() * 120 - 60).toFixed(0) + "px";
+            const size = 12 + Math.random() * 14;
+            heart.style.left = left + "vw";
+            heart.style.width = size + "px";
+            heart.style.height = size + "px";
+            heart.style.setProperty("--drift", drift);
+            heartsLayer.appendChild(heart);
+            setTimeout(() => heart.remove(), 2500);
+        }
+
+        let lastHeart = 0;
+        window.addEventListener("mousemove", (e) => {
+            const now = Date.now();
+            if (now - lastHeart > 300) {
+                spawnHeart();
+                lastHeart = now;
+            }
+        });
+        setInterval(spawnHeart, 800);
+    </script>
+</body>
+
+</html>
